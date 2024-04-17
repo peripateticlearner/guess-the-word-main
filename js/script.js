@@ -25,7 +25,7 @@ const playAgainButton = document.querySelector(".play-again");
 let word = "magnolia";
 
 //The variable contains all the letters the player guesses.
-const guessedLetters = [];
+let guessedLetters = [];
 
 // maximum number of guesses a player can make
 let remainingGuesses = 8;
@@ -131,6 +131,7 @@ const updateRemainingGuesses = function (guess) {
     
     if (remainingGuesses === 0) {
         message.innerHTML = `Game over! The word was <span class="highlight">${word}</span>. Why don't you give it another try.`;
+        startOver();
     } else if (remainingGuesses === 1) {
         remainingGuessesSpan.innerText = `${remainingGuesses} guess`;
     } else {
@@ -143,7 +144,33 @@ const checkForWin = function () {
     if (word.toUpperCase() === wordInProgress.innerText) {
         message.classList.add("win");
         message.innerHTML = `<p class="highlight">You guessed correct the word! Congrats!</p>`;
+
+        startOver();
     }
 };
 
+const startOver = function () {
+    guessButton.classList.add("hide");
+    remainingGuessesElement.classList.add("hide");
+    guessedLettersElement.classList.add("hide");
+    playAgainButton.classList.remove("hide");
+};
 
+playAgainButton.addEventListener("click", function () {
+    //resetting original values
+    message.classList.remove("win");
+    guessedLetters = [];
+    remainingGuesses = 8;
+    remainingGuessesSpan.innerText = `${remainingGuesses} guesses`;
+    guessedLettersElement.innerHTML = "";
+    message.innerText = "";
+
+    //displaying correct UI elements
+    guessButton.classList.remove("hide");
+    remainingGuessesElement.classList.remove("hide");
+    guessedLettersElement.classList.remove("hide");
+    playAgainButton.classList.add("hide");
+
+    // grabbing new word
+    getWord();
+});
