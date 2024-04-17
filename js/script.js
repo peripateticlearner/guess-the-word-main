@@ -22,7 +22,7 @@ const message = document.querySelector(".message");
 //The hidden button that will appear prompting the player to play again.
 const playAgainButton = document.querySelector(".play-again");
 
-const word = "magnolia";
+let word = "magnolia";
 
 //The variable contains all the letters the player guesses.
 const guessedLetters = [];
@@ -45,7 +45,7 @@ getWord();
 const placeholder = function (word) {
     const placeholderLetters = [];
     for (const letter of word) {
-        console.log(letter);
+        //console.log(letter);
         placeholderLetters.push("●");
     };
     wordInProgress.innerText = placeholderLetters.join("");
@@ -86,8 +86,8 @@ const makeGuess = function (guess) {
     } else {
         guessedLetters.push(guess);
         console.log(guessedLetters);
-        showGuess();
         updateRemainingGuesses(guess);
+        showGuess();
         updateWordInProgress(guessedLetters);
     }
 };
@@ -122,16 +122,15 @@ const updateWordInProgress = function (guessedLetters) {
 // function that counts guesses remaining
 const updateRemainingGuesses = function (guess) {
     const upperWord = word.toUpperCase();
-    if (upperWord.includes(guess)) {
-        message.innerText = `Nice one! The letter ${guess} is in the word.`;
-    } else {
+    if (!upperWord.includes(guess)) {
         message.innerText = `Sorry, ${guess} is not in the word. Try again!`;
         remainingGuesses -= 1;
+    } else {
+        message.innerText = `Nice one! The letter ${guess} is in the word.`;
     }
     
     if (remainingGuesses === 0) {
         message.innerHTML = `Game over! The word was <span class="highlight">${word}</span>. Why don't you give it another try.`;
-        remainingGuessesSpan.innerText = `${remainingGuesses} guesses`;
     } else if (remainingGuesses === 1) {
         remainingGuessesSpan.innerText = `${remainingGuesses} guess`;
     } else {
@@ -146,4 +145,5 @@ const checkForWin = function () {
         message.innerHTML = `<p class="highlight">You guessed correct the word! Congrats!</p>`;
     }
 };
+
 
